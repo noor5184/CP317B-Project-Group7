@@ -200,9 +200,79 @@ Agreed direction:
 - No separate Tkinter application is planned.
 
 Provisional implementation:
-- Python, Flask, Jinja rendered HTML/CSS, and SQLite.
+- Python, Flask, Jinja rendered HTML/CSS, and SQLite.  
 - Local server demonstration initially; public hosting is undecided.
 
 Proposed scope:
 - Demonstrate one configurable example institution.
 - Treat full multi university support as a possible future extension.
+
+12. REQUIREMENTS REFINEMENT
+
+The University Course Registration System is designed to provide students and administrators with a centralized web-based system for managing university course registration. Students will be able to sign in, browse available course sections, view seat availability, register for or withdraw from sections, and view their current class schedules. Administrators will be responsible for managing courses, academic terms, sections, student accounts, registration requirements, and enrollment information.   
+
+The system will use a single authentication system for both students and administrators. After signing in, users will be directed to the appropriate area of the application depending on their role. Registration will be controlled by rules such as section capacity, duplicate enrollment prevention, and prerequisite requirements. If registration cannot be completed, the system should clearly explain the reason to the student.    
+
+- Functional Requirements
+
+FR-01: User Authentication
+
+The system shall allow students and administrators to securely sign in using their account credentials. The system shall identify the user's role and direct them to the appropriate student or administrator area.
+
+FR-02: Course Search and Browsing
+
+The system shall allow students to search and browse available course sections for an academic term. Students shall be able to view relevant course and section information.    
+
+FR-03: View Course Availability
+
+The system shall display section capacity, enrollment information, and the number of remaining seats so that students can determine whether space is available before attempting registration.    
+
+FR-04: Course Registration
+
+The system shall allow a student to register for an available course section. Before completing registration, the system shall check the student's identity, existing enrollment, prerequisites, and remaining capacity.    
+
+FR-05: Registration Rule Validation
+
+The system shall prevent enrollment when a section is full, when the student already has an active enrollment in that section, or when required prerequisites have not been satisfied. If registration fails, the system shall display a clear reason.    
+
+FR-06: Course Withdrawal
+
+The system shall allow students to withdraw from a section in which they are currently enrolled. After withdrawal, the system shall update the student's enrollment record and make the released seat available again.    
+
+FR-07: View Student Schedule
+
+The system shall allow students to view their registered course sections and associated meeting times in a personal schedule.    
+
+FR-08: Manage Course Offerings
+
+The system shall allow administrators to create and modify academic terms, courses, sections, section capacities, and course prerequisites.    
+
+FR-09: Manage Student Records
+
+The system shall allow authorized administrators to create and maintain student account and record information required for course registration.    
+
+FR-10: Enrollment Reporting
+
+The system shall allow administrators to view enrollment counts and remaining seats for course sections so that registration levels can be monitored.    
+
+- Non-Functional Requirements
+
+NFR-01: Security
+
+The system shall use authenticated sessions and role-based access control. Students shall not be able to access administrator functions by manually entering administrator URLs. Passwords should be stored as hashes rather than plaintext.    
+
+NFR-02: Privacy
+
+Students shall only be able to access their own schedules and enrollment information. Private student information shall only be accessible to authorized users, and demonstration data should use fictional student information.    
+
+NFR-03: Usability
+
+The application shall provide clear and understandable student and administrator interfaces. Registration failures and other errors should explain what went wrong so that users understand the action required.    
+
+NFR-04: Accessibility
+
+Forms and controls should use clear labels, support keyboard navigation, maintain readable visual contrast, and communicate errors without relying only on colour.    
+
+NFR-05: Data Integrity and Correctness
+
+The system shall maintain consistent enrollment and capacity information. Registration and seat assignment should occur together so that two registration requests cannot both claim the final available seat.  
