@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}REgistro{% endblock %} · Course Registration</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-content">
+      <a class="brand" href="{{ url_for('auth.index') }}"><span class="brand-mark">R</span> REgistro <span class="brand-subtitle">University Portal</span></a>
+      {% if g.user %}
+        <nav aria-label="Main navigation" class="main-nav">
+          {% if g.user['role'] == 'admin' %}
+            <a href="{{ url_for('auth.admin_portal') }}">Dashboard</a>
+            <a href="{{ url_for('admin_terms.term_list') }}">Terms</a>
+            <a href="{{ url_for('admin_courses.course_list') }}">Courses</a>
+            <a href="{{ url_for('admin_sections.section_list') }}">Sections</a>
+            <a href="{{ url_for('admin_students.student_list') }}">Students</a>
+          {% else %}
+            <a href="{{ url_for('auth.student_portal') }}">Dashboard</a>
+          {% endif %}
+          <form class="logout-form" method="post" action="{{ url_for('auth.logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="button button-outline button-small" type="submit">Log out</button>
+          </form>
+        </nav>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="shell content">
+    {% for message in get_flashed_messages() %}
+      <div class="alert alert-success" role="status">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer shell">CP317B · Group 7 · University Course Registration System</footer>
+</body>
+</html>
