@@ -7,6 +7,8 @@ import auth
 import db
 import admin_courses
 import admin_sections
+import admin_terms
+import admin_students
 
 app = Flask(__name__)
 
