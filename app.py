@@ -26,5 +26,7 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 db.init_app(app)
 app.register_blueprint(auth.bp)
+app.register_blueprint(admin_terms.bp)
+app.register_blueprint(admin_students.bp)
 app.register_blueprint(admin_courses.bp)
 app.register_blueprint(admin_sections.bp)
