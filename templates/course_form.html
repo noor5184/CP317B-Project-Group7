@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }} | REgistro</title>
+</head>
+<body>
+    <main>
+        <h1>REgistro</h1>
+        <h2>{{ page_title }}</h2>
+
+        <p>
+            <a href="{{ url_for('auth.admin_portal') }}">
+                Back to dashboard
+            </a>
+        </p>
+
+        {% for message in get_flashed_messages() %}
+            <p role="status">{{ message }}</p>
+        {% endfor %}
+
+        {% if error %}
+            <p role="alert">{{ error }}</p>
+        {% endif %}
+
+        <form method="post">
+            <input type="hidden" name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <p>
+                <label for="code">Course code</label><br>
+                <input id="code" name="code" type="text"
+                       value="{{ course['code'] }}" required>
+            </p>
+
+            <p>
+                <label for="title">Course title</label><br>
+                <input id="title" name="title" type="text"
+                       value="{{ course['title'] }}" required>
+            </p>
+
+            <p>
+                <label for="description">Description (optional)</label><br>
+                <textarea id="description" name="description"
+                          rows="4">{{ course["description"] }}</textarea>
+            </p>
+
+            <button type="submit">
+                {{ "Save changes" if is_edit else "Create course" }}
+            </button>
+        </form>
+
+        {% if is_edit %}
+            <p>
+                <a href="{{ url_for('admin_courses.course_form') }}">
+                    Add another course
+                </a>
+            </p>
+        {% endif %}
+    </main>
+</body>
+</html>

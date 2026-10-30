@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }} | REgistro</title>
+</head>
+<body>
+    <main>
+        <h1>REgistro</h1>
+        <h2>{{ page_title }}</h2>
+
+        <p>
+            <a href="{{ url_for('auth.admin_portal') }}">
+                Back to dashboard
+            </a>
+        </p>
+
+        {% for message in get_flashed_messages() %}
+            <p role="status">{{ message }}</p>
+        {% endfor %}
+
+        {% if error %}
+            <p role="alert">{{ error }}</p>
+        {% endif %}
+
+        {% if not courses or not terms %}
+            <p>
+                A course and an academic term are required
+                before a section can be saved.
+            </p>
+        {% endif %}
+
+        <form method="post">
+            <input type="hidden" name="csrf_token"
+                   value="{{ csrf_token() }}">
+
+            <p>
+                <label for="course_id">Course</label><br>
+                <select id="course_id" name="course_id" required>
+                    <option value="">Select a course</option>
+
+                    {% for course in courses %}
+                        <option value="{{ course['id'] }}"
+                            {% if course["id"]|string == section["course_id"]|string %}selected{% endif %}>
+                            {{ course["code"] }} — {{ course["title"] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <label for="term_id">Academic term</label><br>
+                <select id="term_id" name="term_id" required>
+                    <option value="">Select a term</option>
+
+                    {% for term in terms %}
+                        <option value="{{ term['id'] }}"
+                            {% if term["id"]|string == section["term_id"]|string %}selected{% endif %}>
+                            {{ term["code"] }} — {{ term["name"] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <label for="code">Section code</label><br>
+                <input id="code" name="code"
+                       value="{{ section['code'] }}" required>
+            </p>
+
+            <fieldset>
+                <legend>Meeting days</legend>
+
+                {% for day in days %}
+                    <label>
+                        <input type="checkbox" name="meeting_days"
+                               value="{{ day }}"
+                               {% if day in section["meeting_days"] %}checked{% endif %}>
+                        {{ day }}
+                    </label>
+                {% endfor %}
+            </fieldset>
+
+            <p>
+                <label for="start_time">Start time</label><br>
+                <input id="start_time" name="start_time" type="time"
+                       value="{{ section['start_time'] }}" required>
+            </p>
+
+            <p>
+                <label for="end_time">End time</label><br>
+                <input id="end_time" name="end_time" type="time"
+                       value="{{ section['end_time'] }}" required>
+            </p>
+
+            <p>
+                <label for="location">Location</label><br>
+                <input id="location" name="location"
+                       value="{{ section['location'] }}" required>
+            </p>
+
+            <p>
+                <label for="capacity">Capacity</label><br>
+                <input id="capacity" name="capacity" type="number"
+                       min="0" step="1"
+                       value="{{ section['capacity'] }}" required>
+            </p>
+
+            <button type="submit"
+                    {% if not courses or not terms %}disabled{% endif %}>
+                {{ "Save changes" if is_edit else "Create section" }}
+            </button>
+        </form>
+
+        {% if is_edit %}
+            <p>
+                <a href="{{ url_for('admin_sections.section_form') }}">
+                    Add another section
+                </a>
+            </p>
+        {% endif %}
+    </main>
+</body>
+</html>
