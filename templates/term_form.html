@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('admin_terms.term_list') }}">← Back to academic terms</a>
+<div class="page-heading"><div><p class="eyebrow">ADM-4.2</p><h1>{{ page_title }}</h1><p class="muted">Dates are inclusive and the end cannot be before the start.</p></div></div>
+<section class="panel form-panel">
+{% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+<form method="post" class="form-stack">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div><label for="code">Term code <span class="required">*</span></label><input id="code" name="code" value="{{ term['code'] }}" placeholder="2026F" maxlength="30" required></div>
+    <div><label for="name">Term name <span class="required">*</span></label><input id="name" name="name" value="{{ term['name'] }}" placeholder="Fall 2026" maxlength="120" required></div>
+    <div><label for="start_date">Start date <span class="required">*</span></label><input id="start_date" name="start_date" type="date" value="{{ term['start_date'] }}" required></div>
+    <div><label for="end_date">End date <span class="required">*</span></label><input id="end_date" name="end_date" type="date" value="{{ term['end_date'] }}" required></div>
+  </div>
+  <div class="form-actions"><button class="button" type="submit">{{ 'Save changes' if is_edit else 'Create term' }}</button><a class="button button-outline" href="{{ url_for('admin_terms.term_list') }}">Cancel</a></div>
+</form></section>
+{% endblock %}

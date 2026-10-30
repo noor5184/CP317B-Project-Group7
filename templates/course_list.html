@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Courses{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Administration</p><h1>Courses</h1><p class="muted">Review course offerings and edit their details.</p></div><a class="button" href="{{ url_for('admin_courses.course_form') }}">+ Add course</a></div>
+<section class="panel table-panel">
+  {% if courses %}
+  <div class="table-scroll"><table><thead><tr><th>Course code</th><th>Title</th><th>Description</th><th>Action</th></tr></thead><tbody>
+    {% for course in courses %}<tr><td><strong>{{ course['code'] }}</strong></td><td>{{ course['title'] }}</td><td class="description-cell">{{ course['description'] or '—' }}</td><td><a href="{{ url_for('admin_courses.course_form', course_id=course['id']) }}">Edit</a></td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<p class="empty-state">No courses yet. Add a course before creating a section.</p>{% endif %}
+</section>
+{% endblock %}

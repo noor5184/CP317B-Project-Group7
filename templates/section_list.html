@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Course sections{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Administration</p><h1>Course sections</h1><p class="muted">Browse offerings, meeting details, and capacity by term.</p></div><a class="button" href="{{ url_for('admin_sections.section_form') }}">+ Add section</a></div>
+<form method="get" class="filter-bar panel"><label for="term_id">Academic term</label><select id="term_id" name="term_id"><option value="">All terms</option>
+  {% for term in terms %}<option value="{{ term['id'] }}" {% if selected_term_id == term['id'] %}selected{% endif %}>{{ term['code'] }} · {{ term['name'] }}</option>{% endfor %}</select>
+  <button class="button button-small" type="submit">Filter</button><a href="{{ url_for('admin_sections.section_list') }}">Clear</a>
+</form>
+<section class="panel table-panel">
+{% if sections %}
+<div class="table-scroll"><table><thead><tr><th>Course</th><th>Section</th><th>Academic term</th><th>Meetings</th><th>Location</th><th>Capacity</th><th>Action</th></tr></thead><tbody>
+  {% for section in sections %}<tr><td><strong>{{ section['course_code'] }}</strong><div class="muted small">{{ section['course_title'] }}</div></td><td>{{ section['code'] }}</td><td>{{ section['term_code'] }}</td><td>{{ section['meeting_days'] }}<div class="muted small">{{ section['start_time'] }}–{{ section['end_time'] }}</div></td><td>{{ section['location'] }}</td><td>{{ section['capacity'] }}</td><td><a href="{{ url_for('admin_sections.section_form', section_id=section['id']) }}">Edit</a></td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<p class="empty-state">No sections match this filter. Create one using an existing course and term.</p>{% endif %}
+</section>
+{% endblock %}

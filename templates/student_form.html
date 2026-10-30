@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('admin_students.student_list') }}">← Back to students</a>
+<div class="page-heading"><div><p class="eyebrow">ADM-3.2</p><h1>{{ page_title }}</h1><p class="muted">Use fictional test details; do not enter real student records.</p></div></div>
+<section class="panel form-panel">
+{% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+<form method="post" class="form-stack"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div><label for="full_name">Student name <span class="required">*</span></label><input id="full_name" name="full_name" value="{{ student['full_name'] }}" maxlength="120" placeholder="Alex Cruz" required></div>
+    <div><label for="student_number">Student number <span class="required">*</span></label><input id="student_number" name="student_number" value="{{ student['student_number'] }}" minlength="3" maxlength="30" pattern="[A-Za-z0-9-]+" placeholder="TEST1003" required></div>
+    <div><label for="username">Username <span class="required">*</span></label><input id="username" name="username" value="{{ student['username'] }}" minlength="3" maxlength="50" pattern="[A-Za-z0-9._-]+" autocomplete="off" placeholder="student3" required></div>
+    <div><label for="password">{{ 'New password (optional)' if is_edit else 'Password' }}{% if not is_edit %} <span class="required">*</span>{% endif %}</label>
+      <input id="password" name="password" type="password" minlength="8" autocomplete="new-password" {% if not is_edit %}required{% endif %}>
+      <p class="field-hint">At least 8 characters. {% if is_edit %}Leave blank to keep the existing password.{% else %}The password is stored securely as a hash.{% endif %}</p>
+    </div>
+  </div>
+  <div class="form-actions"><button class="button" type="submit">{{ 'Save changes' if is_edit else 'Create account' }}</button><a class="button button-outline" href="{{ url_for('admin_students.student_list') }}">Cancel</a></div>
+</form></section>
+{% endblock %}
