@@ -4,10 +4,27 @@ from flask import (
 
 from auth import role_required
 from courses import list_courses
-from sections import DAYS, create_section, get_section, update_section
+from sections import DAYS, create_section, get_section, list_sections, update_section
 from terms import list_terms
 
 bp = Blueprint("admin_sections", __name__, url_prefix="/admin/sections")
+
+@bp.get("/")
+@role_required("admin")
+def section_list():
+    term_id = request.args.get("term_id", "").strip()
+
+    try:
+        sections = list_sections(term_id or None)
+    except ValueError as problem:
+        abort(400, description=str(problem))
+
+    return render_template(
+        "section_list.html",
+        sections=sections,
+        terms=list_terms(),
+        selected_term_id=int(term_id) if term_id else None,
+    )
 
 
 @bp.route("/new", defaults={"section_id": None}, methods=("GET", "POST"))

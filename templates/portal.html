@@ -9,14 +9,26 @@
 
     {% if g.user["role"] == "admin" %}
         <p>
-            <a href="{{ url_for('admin_courses.course_form') }}">
-                Add a course
+            <a href="{{ url_for('admin_terms.term_list') }}">
+                Manage academic terms
             </a>
         </p>
 
         <p>
-            <a href="{{ url_for('admin_sections.section_form') }}">
-                Add a section
+            <a href="{{ url_for('admin_courses.course_list') }}">
+                Manage courses
+            </a>
+        </p>
+
+        <p>
+            <a href="{{ url_for('admin_sections.section_list') }}">
+                Manage sections
+            </a>
+        </p>
+
+        <p>
+            <a href="{{ url_for('admin_students.student_list') }}">
+                Manage student accounts
             </a>
         </p>
     {% endif %}

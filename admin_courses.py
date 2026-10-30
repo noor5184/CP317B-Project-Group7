@@ -3,9 +3,14 @@ from flask import (
 )
 
 from auth import role_required
-from courses import create_course, get_course, update_course
+from courses import create_course, get_course, list_courses, update_course
 
 bp = Blueprint("admin_courses", __name__, url_prefix="/admin/courses")
+
+@bp.get("/")
+@role_required("admin")
+def course_list():
+    return render_template("course_list.html", courses=list_courses())
 
 
 @bp.route("/new", defaults={"course_id": None}, methods=("GET", "POST"))
