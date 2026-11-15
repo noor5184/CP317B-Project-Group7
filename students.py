@@ -28,6 +28,15 @@ def get_student(student_id):
     ).fetchone()
 
 
+
+def get_student_by_user_id(user_id):
+    """Return the student profile linked to a login account."""
+    return get_db().execute(
+        STUDENT_QUERY + " AND s.user_id = ?",
+        (user_id,),
+    ).fetchone()
+
+
 def _validate_student_fields(username, student_number, full_name):
     username = username.strip()
     student_number = student_number.strip()

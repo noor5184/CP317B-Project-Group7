@@ -45,3 +45,16 @@ CREATE TABLE IF NOT EXISTS sections (
     FOREIGN KEY (term_id) REFERENCES terms(id),
     CHECK (end_time > start_time)
 );
+
+CREATE TABLE IF NOT EXISTS enrollments (
+    id INTEGER PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    section_id INTEGER NOT NULL,
+    registered_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (student_id, section_id),
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (section_id) REFERENCES sections(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_enrollments_section_id
+ON enrollments (section_id);

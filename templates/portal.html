@@ -51,6 +51,12 @@
         {% if student %}
             <p>Name: {{ student["full_name"] }}</p>
             <p>Student number: {{ student["student_number"] }}</p>
+
+            <p>
+                <a href="{{ url_for('student_registration.selections') }}">
+                    Selected courses
+                </a>
+            </p>
         {% endif %}
     </main>
 </body>
