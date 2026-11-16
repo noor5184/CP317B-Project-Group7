@@ -3,13 +3,15 @@ from flask import (
 )
 
 from auth import role_required
+
 from enrollments import (
     get_section_remaining_seats, get_section_selection_error,
-    list_student_enrollments,
+    list_student_enrollments, register_selected_sections,
 )
 from sections import get_section
 from students import get_student_by_user_id
 from terms import get_term, list_terms
+from course_requirements import check_registration_requirements
 
 bp = Blueprint(
     "student_registration", __name__, url_prefix="/student/registration"
@@ -111,6 +113,7 @@ def selections(term_id):
         term=term,
         selected_sections=selected,
         selection_errors=selection_errors,
+        registered_sections=current,
     )
 
 
@@ -174,4 +177,32 @@ def remove_selection(term_id, section_id):
     return redirect(url_for(
         "student_registration.selections",
         term_id=term_id,
+    ))
+
+@bp.post("/<int:term_id>/submit")
+@role_required("student")
+def submit_selection(term_id):
+    student = _current_student()
+    _term_or_404(term_id)
+    section_ids = session.get("registration_selections", {}).get(
+        str(term_id), []
+    )
+
+    try:
+        enrollment_ids = register_selected_sections(
+            student["id"], term_id, section_ids,
+            check_registration_requirements,
+        )
+    except ValueError as problem:
+        flash(str(problem), "error")
+    else:
+        _save_selection(term_id, [])
+        flash(
+            f"Registration successful: {len(enrollment_ids)} "
+            "section(s) registered.",
+            "success",
+        )
+
+    return redirect(url_for(
+        "student_registration.selections", term_id=term_id,
     ))
