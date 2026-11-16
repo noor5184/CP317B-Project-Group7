@@ -144,6 +144,19 @@ def update_section(
 
     try:
         with database:
+            database.execute("BEGIN IMMEDIATE")
+
+            enrolled_count = database.execute(
+                "SELECT COUNT(*) FROM enrollments WHERE section_id = ?",
+                (section_id,),
+            ).fetchone()[0]
+
+            if values[-1] < enrolled_count:
+                raise ValueError(
+                    "Capacity cannot be lower than current enrollment "
+                    f"({enrolled_count} currently enrolled)."
+                )
+
             cursor = database.execute(
                 "UPDATE sections SET course_id = ?, term_id = ?, "
                 "code = ?, meeting_days = ?, start_time = ?, "

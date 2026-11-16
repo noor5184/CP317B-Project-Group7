@@ -68,3 +68,14 @@ CREATE TABLE IF NOT EXISTS course_completions (
     FOREIGN KEY (student_id) REFERENCES students(id),
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
+CREATE TABLE IF NOT EXISTS course_requirements (
+    id INTEGER PRIMARY KEY,
+    course_id INTEGER NOT NULL,
+    required_course_id INTEGER NOT NULL,
+    requirement_type TEXT NOT NULL
+        CHECK (requirement_type IN ('prerequisite', 'corequisite')),
+    UNIQUE (course_id, required_course_id),
+    CHECK (course_id != required_course_id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (required_course_id) REFERENCES courses(id)
+);
