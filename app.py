@@ -10,6 +10,8 @@ import admin_sections
 import admin_terms
 import admin_students
 import student_registration
+import student_courses
+import admin_completions
 
 app = Flask(__name__)
 
@@ -32,3 +34,5 @@ app.register_blueprint(admin_students.bp)
 app.register_blueprint(admin_courses.bp)
 app.register_blueprint(admin_sections.bp)
 app.register_blueprint(student_registration.bp)
+app.register_blueprint(student_courses.bp)
+app.register_blueprint(admin_completions.bp)

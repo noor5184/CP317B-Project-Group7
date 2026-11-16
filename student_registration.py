@@ -39,7 +39,7 @@ def _save_selection(term_id, section_ids):
         session.pop("registration_selections", None)
 
 
-def _selected_sections(term_id):
+def get_selected_sections(term_id):
     stored_ids = session.get("registration_selections", {}).get(
         str(term_id), []
     )
@@ -87,7 +87,7 @@ def selections(term_id):
         ))
 
     term = _term_or_404(term_id) if term_id is not None else None
-    selected = _selected_sections(term_id) if term is not None else []
+    selected = get_selected_sections(term_id) if term is not None else []
     current = (
         list_student_enrollments(student["id"], term_id)
         if term is not None else []
@@ -128,7 +128,7 @@ def add_selection(section_id):
         abort(404)
 
     term_id = section["term_id"]
-    selected = _selected_sections(term_id)
+    selected = get_selected_sections(term_id)
     error = get_section_selection_error(
         section,
         list_student_enrollments(student["id"], term_id),
@@ -159,7 +159,7 @@ def add_selection(section_id):
 def remove_selection(term_id, section_id):
     _current_student()
     _term_or_404(term_id)
-    selected = _selected_sections(term_id)
+    selected = get_selected_sections(term_id)
     remaining_ids = [
         item["id"] for item in selected
         if item["id"] != section_id

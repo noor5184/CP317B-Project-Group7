@@ -58,3 +58,13 @@ CREATE TABLE IF NOT EXISTS enrollments (
 
 CREATE INDEX IF NOT EXISTS idx_enrollments_section_id
 ON enrollments (section_id);
+
+CREATE TABLE IF NOT EXISTS course_completions (
+    id INTEGER PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    completed_on TEXT NOT NULL,
+    UNIQUE (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+);

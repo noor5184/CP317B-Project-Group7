@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Course completions{% endblock %}
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">Administration</p>
+        <h1>Course completions</h1>
+    </div>
+    <a class="button" href="{{ url_for('admin_completions.new') }}">
+        Add completion
+    </a>
+</div>
+
+<section class="panel table-panel">
+    {% if completions %}
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Completed on</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for completion in completions %}
+                <tr>
+                    <td>
+                        <strong>{{ completion["student_number"] }}</strong>
+                        <div class="muted small">{{ completion["full_name"] }}</div>
+                    </td>
+                    <td>
+                        <strong>{{ completion["course_code"] }}</strong>
+                        <div class="muted small">{{ completion["course_title"] }}</div>
+                    </td>
+                    <td>{{ completion["completed_on"] }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_completions.edit', completion_id=completion['id']) }}">
+                            Edit
+                        </a>
+                        <form method="post"
+                            action="{{ url_for('admin_completions.remove', completion_id=completion['id']) }}"
+                            onsubmit="return confirm('Remove this course completion record?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="button button-outline button-small" type="submit">
+                                Remove
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No course completion records have been added.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -55,9 +55,13 @@ def new():
 @bp.route("/<int:completion_id>/edit", methods=("GET", "POST"))
 @role_required("admin")
 def edit(completion_id):
-    existing = get_completion(completion_id)
+    try:
+        existing = get_completion(completion_id)
+    except ValueError:
+        abort(404)
     if existing is None:
         abort(404)
+
     completion = dict(existing)
     if request.method == "POST":
         completion.update(_form_data())
@@ -77,7 +81,7 @@ def remove(completion_id):
     try:
         delete_completion(completion_id)
     except ValueError as problem:
-        flash(str(problem))
+        flash(str(problem), "error")
     else:
         flash("Course completion removed.")
     return redirect(url_for("admin_completions.index"))

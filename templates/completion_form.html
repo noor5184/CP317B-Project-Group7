@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% set heading = "Edit completion" if is_edit else "Add completion" %}
+{% block title %}{{ heading }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('admin_completions.index') }}">
+  Back to completions
+</a>
+<div class="page-heading"><h1>{{ heading }}</h1></div>
+
+<section class="panel form-panel">
+{% if error %}
+<div class="alert alert-error" role="alert">{{ error }}</div>
+{% endif %}
+
+<form method="post" class="form-stack">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <div class="form-grid">
+    <div>
+      <label for="student_id">Student</label>
+      <select id="student_id" name="student_id" required>
+        <option value="">Select a student</option>
+        {% for student in students %}
+        <option value="{{ student['id'] }}"
+                {% if (completion['student_id']|string) == (student['id']|string) %}selected{% endif %}>
+          {{ student["student_number"] }} — {{ student["full_name"] }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label for="course_id">Completed course</label>
+      <select id="course_id" name="course_id" required>
+        <option value="">Select a course</option>
+        {% for course in courses %}
+        <option value="{{ course['id'] }}"
+                {% if (completion['course_id']|string) == (course['id']|string) %}selected{% endif %}>
+          {{ course["code"] }} — {{ course["title"] }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label for="completed_on">Completion date</label>
+      <input id="completed_on" name="completed_on" type="date"
+             value="{{ completion['completed_on'] }}"
+             max="{{ today }}" required>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="button" type="submit">Save completion</button>
+    <a class="button button-outline"
+       href="{{ url_for('admin_completions.index') }}">
+      Cancel
+    </a>
+  </div>
+</form>
+</section>
+{% endblock %}

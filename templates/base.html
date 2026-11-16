@@ -18,8 +18,10 @@
             <a href="{{ url_for('admin_courses.course_list') }}">Courses</a>
             <a href="{{ url_for('admin_sections.section_list') }}">Sections</a>
             <a href="{{ url_for('admin_students.student_list') }}">Students</a>
+            <a href="{{ url_for('admin_completions.index') }}">Completions</a>
           {% else %}
             <a href="{{ url_for('auth.student_portal') }}">Dashboard</a>
+            <a href="{{ url_for('student_courses.index') }}">Course search</a>
             <a href="{{ url_for('student_registration.selections') }}">
               Selected courses
             </a>

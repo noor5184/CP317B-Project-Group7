@@ -31,6 +31,12 @@
                 Manage student accounts
             </a>
         </p>
+
+        <p>
+            <a href="{{ url_for('admin_completions.index') }}">
+                Manage course completions
+            </a>
+        </p>
     {% endif %}
 
     <form method="post" action="{{ url_for('auth.logout') }}">
@@ -51,6 +57,11 @@
         {% if student %}
             <p>Name: {{ student["full_name"] }}</p>
             <p>Student number: {{ student["student_number"] }}</p>
+            <p>
+                <a href="{{ url_for('student_courses.index') }}">
+                    Course search
+                </a>
+            </p>
 
             <p>
                 <a href="{{ url_for('student_registration.selections') }}">

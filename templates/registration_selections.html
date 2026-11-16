@@ -8,6 +8,10 @@
         <h1>Selected courses</h1>
         <p class="muted">{{ student["full_name"] }}</p>
     </div>
+    <a class="button"
+       href="{{ url_for('student_courses.index', term_id=term['id'] if term else '') }}">
+        Find courses
+    </a>
 </div>
 
 {% if terms %}
